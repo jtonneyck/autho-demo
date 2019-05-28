@@ -12,6 +12,7 @@ class App extends React.Component {
   constructor(){
     super()
     this.fetchUser = this.fetchUser.bind(this)
+    this.logout = this.logout.bind(this)
   }
   state = {
     user: {},
@@ -29,10 +30,9 @@ class App extends React.Component {
       method: "post",
       withCredentials: true
     })
-    .then((user)=> {
-      
+    .then((response)=> {
       this.setState({
-        user: user.data
+        user: response.data
       })
     })
     .catch(err=> {
@@ -42,13 +42,32 @@ class App extends React.Component {
     })
   }
 
+  logout() {
+    debugger
+    axios({
+      method: "post",
+      withCredentials: true,
+      url: `${process.env.REACT_APP_BACK_END_BASE_URL}users/logout`
+    })
+    .then((response)=> {
+      this.setState({
+        user: {}
+      })
+    })
+    .catch((err)=> {
+      this.setState({
+        err
+      })
+    })
+  }
+
   render () {
     return (
       <div className="App">
         <header className="App-header">
-          <Nav user={this.state.user}/>
+          <Nav user={this.state.user} logout={this.logout} />
           <Route exact path="/" component={Home} />
-    <Route exact path="/login" render={(props)=> <Login {...props} fetchUser={this.fetchUser} />} />
+          <Route exact path="/login" render={(props)=> <Login {...props} fetchUser={this.fetchUser} />} />
           <Route exact path="/sign-up" component={Signup} />
           <Route exact path="/profile" component={Profile} />
         </header>

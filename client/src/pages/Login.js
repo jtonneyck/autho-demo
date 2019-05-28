@@ -25,7 +25,7 @@ export default class Login extends Component {
             withCredentials: true
         })
         .then((response)=> {
-            debugger
+            
             this.props.fetchUser()
             this.props.history.push("/profile")
         })

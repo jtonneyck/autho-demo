@@ -31,7 +31,6 @@ router.post('/signup', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-  debugger
   User.findOne({username: req.body.username})
     .then((user)=> {
       if(user) {
@@ -55,11 +54,20 @@ router.post('/login', function(req, res, next) {
 });
 
 router.post("/get-user", (req, res)=> {
-  debugger
   if(req.session.user) {
     res.status(200).json(req.session.user)
   } else {
     res.status(403).json({message: "Not logged in"})
   }
 })
+
+router.post("/logout", (req, res)=> {
+  if(req.session.user) {
+    req.session.destroy()
+    res.status(200).json({message: "Logged out"})
+  } else {
+    res.status(403).json({message: "Not logged in"})
+  }
+})
+
 module.exports = router;

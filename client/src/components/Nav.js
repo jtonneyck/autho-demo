@@ -9,18 +9,18 @@ export default function Nav(props) {
             
             {
                 Object.keys(props.user).length === 0?
-                <div>
+                <>
                 <Link to={"/login"}>Login</Link>
                 <Link to={"/sign-up"}>Sign up</Link>
-                </div>
+                </>
                 :
-                <div>
-                    <Link to={"/logout"}>Logout</Link>
+                <>
+                    <Link to={"/profile"}>Profile</Link>
+                    <Link onClick={props.logout}>Logout</Link>
                     <p>Welcome {props.user.username}</p>
-                </div>
+                </>
             }
-            <Link to={"/profile"}>Profile</Link>
-            
+
         </nav>
     )
 }
