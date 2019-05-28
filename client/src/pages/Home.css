@@ -1,0 +1,11 @@
+h1 {
+  color: white;  
+}
+
+.container {
+    display: flex;
+    height: 80vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
