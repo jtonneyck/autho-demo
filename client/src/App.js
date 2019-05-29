@@ -69,7 +69,7 @@ class App extends React.Component {
           <Route exact path="/" component={Home} />
           <Route exact path="/login" render={(props)=> <Login {...props} fetchUser={this.fetchUser} />} />
           <Route exact path="/sign-up" component={Signup} />
-          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/profile" render={(props)=><Profile {...props} user={this.state.user}/>} />
         </header>
       </div>
     )
