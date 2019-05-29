@@ -1,12 +1,13 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import "./Nav.css"
 export default function Nav(props) {
     debugger
     return (
+        <>
+        <div className="spacer"></div>
         <nav>
             <Link to={"/"}>Home</Link>
-            
             {
                 Object.keys(props.user).length === 0?
                 <>
@@ -20,7 +21,8 @@ export default function Nav(props) {
                     <p>Welcome {props.user.username}</p>
                 </>
             }
-
         </nav>
+
+        </>
     )
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from "axios"
 import "./Login.css"
+import "./Profile.css"
 
 export default class Profile extends Component {
     constructor(props){
@@ -11,7 +12,7 @@ export default class Profile extends Component {
             profilePic: "",
             password: "password"
         }
-        this.formRef = React.createRef();
+        this.formRef = React.createRef(); // new
         this.handleChange = this.handleChange.bind(this);
         this.submit = this.submit.bind(this);
 
@@ -23,15 +24,18 @@ export default class Profile extends Component {
     }
     submit(e) {
         e.preventDefault()
-        let formData = new FormData(this.formRef)
-
+        let form = this.formRef.current // document.getElementById("theForm")
+        let formData = new FormData(form) // new
+        debugger
         axios({
-            url: "localhost:3000/users/update",
+            url: "http://localhost:3000/users/update",
             data: formData,
-            method: "post"
+            method: "post",
+            headers: {'Content-Type': 'multipart/form-data' }, //new
+            withCredentials: true
         })
         .then((user)=> {
-            debugger
+            this.props.fetchUser()
         })
         .catch((user)=> {
             debugger
@@ -39,14 +43,20 @@ export default class Profile extends Component {
     }
     render() {
         return (
-            <div>
-                
-                <form ref={this.formRef} onSubmit={this.submit}>
+            <div className="flex-container">
+    
+                <form ref={this.formRef} /*new*/ onSubmit={this.submit} id="theForm">
                     <input onChange={this.handleChange}type="text" name="username" value={this.state.username}/>
                     <input onChange={this.handleChange}type="password" name="password" value={this.state.password} />
                     <input onChange={this.handleChange}type="file" name="profilePic" value={this.state.profilePic} />
                     <button type="submit">Submit</button>
                 </form>
+
+                { this.props.user.profilePic? 
+                    <img id="profile-pic" src={`http://localhost:3000/images/${this.props.user.profilePic}`} alt=""/>
+                    :
+                    <h1>Please upload your profile picture</h1>
+                }
             </div>
         )
     }

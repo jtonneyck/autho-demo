@@ -25,7 +25,8 @@ export default class Signup extends Component {
                 username: this.state.username,
                 password: this.state.password
             },
-            method: "post"
+            method: "post",
+            withCredentials: true
         })
         .then((response)=> {
             this.props.history.push("/profile")

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route} from "react-router-dom";
+import {Route, Switch, Redirect} from "react-router-dom";
 import './App.css';
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -24,7 +24,6 @@ class App extends React.Component {
   }
 
   fetchUser = ()=> {
-    debugger
     axios({
       url: `${process.env.REACT_APP_BACK_END_BASE_URL}users/get-user`,
       method: "post",
@@ -33,6 +32,8 @@ class App extends React.Component {
     .then((response)=> {
       this.setState({
         user: response.data
+      }, ()=> {
+        this.props.history.push("/profile") // new but not required
       })
     })
     .catch(err=> {
@@ -43,7 +44,6 @@ class App extends React.Component {
   }
 
   logout() {
-    debugger
     axios({
       method: "post",
       withCredentials: true,
@@ -52,6 +52,8 @@ class App extends React.Component {
     .then((response)=> {
       this.setState({
         user: {}
+      },()=> {
+        this.props.history.push("/")
       })
     })
     .catch((err)=> {
@@ -66,10 +68,14 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <Nav user={this.state.user} logout={this.logout} />
-          <Route exact path="/" component={Home} />
-          <Route exact path="/login" render={(props)=> <Login {...props} fetchUser={this.fetchUser} />} />
-          <Route exact path="/sign-up" component={Signup} />
-          <Route exact path="/profile" render={(props)=><Profile {...props} user={this.state.user}/>} />
+
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" render={(props)=> <Login {...props} fetchUser={this.fetchUser} />} />
+            <Route exact path="/sign-up" component={Signup} />
+            <Route path="/profile" render={(props)=><Profile {...props} user={this.state.user}/>} />
+          </Switch>
+
         </header>
       </div>
     )

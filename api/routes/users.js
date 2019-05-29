@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require("bcrypt")
 var User = require("../models/user")
+var multer  = require('multer')
+var path = require("path")
+
+var upload = multer({ dest: path.join(__dirname, '../public/images/') })
 
 router.post('/signup', function(req, res, next) {
   User.find({username: req.body.username})
@@ -60,7 +64,20 @@ router.post("/get-user", (req, res)=> {
     res.status(403).json({message: "Not logged in"})
   }
 })
-
+router.post("/update", upload.single('profilePic'), (req, res)=> {
+  debugger
+  User.findOneAndUpdate({_id: req.session.user._id}, {profilePic: req.file.filename}, {new: true},)
+    .then((updatedUser)=> {
+      let newSession = req.session.user
+      newSession.profilePic = updatedUser.profilePic
+      req.session.user = newSession
+      debugger
+      res.status(200).json({message: "User updated"})
+    })
+    .catch((err)=> {
+      res.status(500).json({err: err})
+    })
+})
 router.post("/logout", (req, res)=> {
   if(req.session.user) {
     req.session.destroy()

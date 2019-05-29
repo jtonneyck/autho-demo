@@ -5,7 +5,7 @@ var logger = require('morgan');
 var mongoose = require("mongoose")
 var cors = require("cors")
 var session = require('express-session')
-
+var bodyParser = require('body-parser')
 mongoose.connect("mongodb://localhost/auth-demo")
     .then(()=> {
         console.log("connected to mongo")
@@ -19,6 +19,8 @@ app.use(cors({
     origin: ["http://localhost:3001", "localhost:3001"],
     credentials: true
 }))
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(session({
     secret: 'keyboard cat',

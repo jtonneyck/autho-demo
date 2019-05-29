@@ -1,0 +1,9 @@
+#profile-pic {
+    width: 100px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

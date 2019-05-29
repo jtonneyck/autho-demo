@@ -11,3 +11,14 @@ nav a {
     text-decoration: none;
     margin: 2%;
 }
+
+.spacer {
+    height: 80px;
+    width: 100vw;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    background-color: #282c34;
+}
